@@ -1,9 +1,9 @@
 import React from 'react'
 import { compose } from 'ramda'
 import { connect } from 'react-redux'
-// import { actions as scaleActions } from '../../reducers/scale'
 import { actions as stateActions } from '../../reducers/state'
 import Notifications, { TYPE as NOTIFICATION_TYPE } from './components/Notifications'
+import Lattice from './components/Lattice'
 
 const enhance = compose(
   connect(
@@ -31,10 +31,11 @@ const App = ({ addNotification }) => {
   }
 
   return (
-    <>
+    <div className={'App'}>
       <h3>Blob</h3>
+      <Lattice />
       <Notifications />
-    </>
+    </div>
   )
 }
 

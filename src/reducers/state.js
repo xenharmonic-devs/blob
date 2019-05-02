@@ -4,7 +4,9 @@ import autodux from 'autodux'
 
 const { reducer, actions } = autodux({
   slice: 'state',
-  initial: {},
+  initial: {
+    notifications: []
+  },
   actions: {
     addNotification: (state, { title, detail, type }) =>
       evolve(

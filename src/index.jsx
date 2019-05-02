@@ -5,17 +5,10 @@ import { createStore } from 'redux'
 import combinedReducers from './reducers'
 import App from './components/App'
 
-const container = document.getElementById('App')
-
-const initialData = {
-  state: {
-    notifications: []
-  },
-  scale: {}
-}
+const container = document.getElementById('blob')
 
 if (container) {
-  const store = createStore(combinedReducers, initialData)
+  const store = createStore(combinedReducers)
 
   render(
     <Provider store={store}>
