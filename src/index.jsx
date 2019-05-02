@@ -8,9 +8,10 @@ import App from './components/App'
 const container = document.getElementById('App')
 
 const initialData = {
-  scale: {
-    hello: 'redux is working'
-  }
+  state: {
+    notifications: []
+  },
+  scale: {}
 }
 
 if (container) {
