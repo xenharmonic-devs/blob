@@ -8,10 +8,6 @@ import webpack from 'webpack'
 
 const mode = process.env.NODE_ENV === 'development' ? 'development' : 'production'
 
-console.log('------------------------')
-console.log(mode)
-console.log('------------------------')
-
 const clientConfig = {
   entry: {
     'blob.min': [
