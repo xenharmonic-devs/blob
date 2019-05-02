@@ -4,7 +4,8 @@
       "@babel/preset-env",
       {
         "useBuiltIns": "entry",
-        "corejs": 3
+        "corejs": 3,
+        "targets": "last 2 Chrome versions"
       }
     ],
     "@babel/preset-react"

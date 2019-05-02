@@ -1,3 +1,2 @@
-src/client/js/old/lib
-app/js
-static*
+public/**/*
+server/**/*

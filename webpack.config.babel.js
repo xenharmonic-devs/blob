@@ -8,10 +8,13 @@ import webpack from 'webpack'
 
 const mode = process.env.NODE_ENV === 'development' ? 'development' : 'production'
 
+console.log('------------------------')
+console.log(mode)
+console.log('------------------------')
+
 const clientConfig = {
   entry: {
     'blob.min': [
-      '@babel/polyfill',
       './src/index.jsx'
     ]
   },
@@ -22,9 +25,7 @@ const clientConfig = {
   plugins: [
     new MiniCssExtractPlugin({
       filename: '[name].css'
-    }),
-    // https://github.com/webpack/webpack/issues/2537#issuecomment-263630802
-    new webpack.EnvironmentPlugin(['NODE_ENV'])
+    })
   ],
   mode,
   module: {
@@ -84,7 +85,7 @@ const clientConfig = {
       new TerserPlugin({
         cache: false,
         parallel: true,
-        sourceMap: true
+        sourceMap: false
       }),
       new OptimizeCSSAssetsPlugin({})
     ]
