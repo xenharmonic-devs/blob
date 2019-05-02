@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import combinedReducers from './reducers'
 import App from './components/App'
+import './reset.scss'
 
 const container = document.getElementById('blob')
 
