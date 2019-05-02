@@ -10,6 +10,11 @@ source: https://www.facebook.com/groups/234189900598263/permalink/32041929864198
 
 Copy the contents of the `public` folder to any webserver and open `index.html`
 
+or
+
+Install the package locally and run `npm run app`. The page will be hosted at `http://localhost:3000`.
+To stop it, press `Ctrl+C`
+
 ## How to contribute
 
 ### Important folders
@@ -47,6 +52,8 @@ After that you need to run `npm run dev`. This will do a bunch of things in the 
 * watch changes of the files inside the `public` folder and trigger a server restart when any of the files change
 * when the server restarts, then it signals the browser to reload the page for you
 * when you change the source files inside the `src` folder, it will re-build the bundle and save it to `public`
+
+_You can stop the server any time by pressing `Ctrl+C`_
 
 ### Linting and formatting
 
