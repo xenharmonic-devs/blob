@@ -1,10 +1,8 @@
 import path from 'path'
-
 import TerserPlugin from 'terser-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import autoprefixer from 'autoprefixer'
-import webpack from 'webpack'
 
 const mode = process.env.NODE_ENV === 'development' ? 'development' : 'production'
 
