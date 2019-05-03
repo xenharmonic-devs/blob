@@ -1,5 +1,5 @@
 import React from 'react'
-import { compose } from 'ramda'
+import { compose, filter, propEq } from 'ramda'
 import { connect } from 'react-redux'
 import Blob from './Blob'
 import s from './style.scss'
@@ -17,7 +17,7 @@ const Lattice = ({ width, height, url, blobs }) => {
   return (
     <div className={s.Lattice}>
       <img src={url} alt="Lattice" width={width} height={height} />
-      {blobs.map((blob, idx) => (
+      {filter(propEq('isVisible', true), blobs).map((blob, idx) => (
         <Blob key={idx} {...blob} />
       ))}
     </div>
