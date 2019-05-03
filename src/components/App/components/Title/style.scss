@@ -1,0 +1,12 @@
+$height: 50px;
+
+.Title {
+  background: rgb(221, 237, 253);
+  box-shadow: 0 -1px 0 0 lightgrey inset;
+  height: $height;
+  line-height: $height;
+  text-align: center;
+  font-size: 1.3em;
+  letter-spacing: 2px;
+  user-select: none;
+}
