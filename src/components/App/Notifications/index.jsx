@@ -1,8 +1,9 @@
 import React from 'react'
-import { compose } from 'ramda'
+import { compose, isEmpty } from 'ramda'
 import { connect } from 'react-redux'
 import { actions as stateActions } from '../../../reducers/state'
 import Notification from './Notification'
+import s from './style.scss'
 
 const TYPE = {
   INFO: 'info',
@@ -21,8 +22,8 @@ const enhance = compose(
 )
 
 const Notifications = ({ notifications, removeNotification }) => (
-  <div>
-    <h2>Notifications</h2>
+  <div className={s.Notifications}>
+    {isEmpty(notifications) || <h3>Notifications</h3>}
     {notifications.map(props => (
       <Notification key={props.id} {...props} onRemoveNotification={id => removeNotification({ id })} />
     ))}
