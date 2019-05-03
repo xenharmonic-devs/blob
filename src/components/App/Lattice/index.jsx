@@ -1,7 +1,7 @@
 import React from 'react'
 import { compose } from 'ramda'
 import { connect } from 'react-redux'
-import Blob from './components/Blob'
+import Blob from './Blob'
 import s from './style.scss'
 
 const enhance = compose(
