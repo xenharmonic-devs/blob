@@ -1,6 +1,7 @@
 import React from 'react'
-import { compose, filter, intersection, isEmpty } from 'ramda'
+import { compose, reject, intersection, isEmpty } from 'ramda'
 import { connect } from 'react-redux'
+import { getPressedNotesFromNoteTable } from '../../../helpers/midi'
 import Blob from './Blob'
 import s from './style.scss'
 
@@ -10,17 +11,16 @@ const enhance = compose(
     height: state.lattice.height,
     url: state.lattice.url,
     blobs: state.lattice.blobs,
-    pressedKeys: [64]
+    pressedKeys: getPressedNotesFromNoteTable(state.midi.noteTable)
   }))
 )
 
-const isBlobVisible = (pressedKeys, assignedMidiKeys) => !isEmpty(intersection(pressedKeys, assignedMidiKeys))
-
 const Lattice = ({ width, height, url, blobs, pressedKeys }) => {
+  const visibleBlobs = reject(({ assignedMidiKeys }) => isEmpty(intersection(pressedKeys, assignedMidiKeys)), blobs)
   return (
     <div className={s.Lattice}>
       <img src={url} alt="Lattice" width={width} height={height} />
-      {filter(({ assignedMidiKeys }) => isBlobVisible(pressedKeys, assignedMidiKeys), blobs).map((blob, idx) => (
+      {visibleBlobs.map((blob, idx) => (
         <Blob key={idx} {...blob} />
       ))}
     </div>
