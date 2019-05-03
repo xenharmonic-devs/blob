@@ -2,9 +2,9 @@ import React from 'react'
 import { compose } from 'ramda'
 import { connect } from 'react-redux'
 import { actions as stateActions } from '../../reducers/state'
-import Notifications, { TYPE as NOTIFICATION_TYPE } from './components/Notifications'
-import Lattice from './components/Lattice'
-import Title from './components/Title'
+import Notifications, { TYPE as NOTIFICATION_TYPE } from './Notifications'
+import Lattice from './Lattice'
+import Title from './Title'
 
 const enhance = compose(
   connect(

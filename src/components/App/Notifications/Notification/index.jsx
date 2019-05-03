@@ -1,6 +1,6 @@
 import React from 'react'
-import Button from '../../../Button'
-import { NOP } from '../../../../../../helpers/function'
+import Button from '../../Button'
+import { NOP } from '../../../../helpers/function'
 
 const Notification = ({ id, type, title, detail, onRemoveNotification = NOP }) => (
   <div>

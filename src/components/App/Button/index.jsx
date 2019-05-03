@@ -1,5 +1,5 @@
 import React from 'react'
-import { NOP } from '../../../../helpers/function'
+import { NOP } from '../../../helpers/function'
 
 const Button = ({ children, disabled = false, onClick = NOP }) => {
   return (

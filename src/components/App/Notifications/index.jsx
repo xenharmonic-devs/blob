@@ -1,8 +1,8 @@
 import React from 'react'
 import { compose } from 'ramda'
 import { connect } from 'react-redux'
-import { actions as stateActions } from '../../../../reducers/state'
-import Notification from './components/Notification'
+import { actions as stateActions } from '../../../reducers/state'
+import Notification from './Notification'
 
 const TYPE = {
   INFO: 'info',
