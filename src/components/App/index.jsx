@@ -2,6 +2,7 @@ import React from 'react'
 import { compose } from 'ramda'
 import { connect } from 'react-redux'
 import { actions as stateActions } from '../../reducers/state'
+import { actions as midiActions } from '../../reducers/midi'
 import MIDI, { isMidiSupported } from '../../helpers/MIDI'
 import Notifications, { TYPE as NOTIFICATION_TYPE } from './Notifications'
 import Lattice from './Lattice'
@@ -10,18 +11,21 @@ import Title from './Title'
 const enhance = compose(
   connect(
     state => ({}),
-    stateActions
+    {
+      ...stateActions,
+      ...midiActions
+    }
   )
 )
 
-const App = ({ addNotification }) => {
+const App = ({ addNotification, noteOn, noteOff }) => {
   if (isMidiSupported()) {
     const midi = new MIDI()
     midi.on('note on', (note, velocity, channel) => {
-      console.log('pressing note', note)
+      noteOn({ noteIdx: note })
     })
     midi.on('note off', (note, velocity, channel) => {
-      console.log('releasing note', note)
+      noteOff({ noteIdx: note })
     })
     midi.init()
   } else {
