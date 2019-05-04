@@ -16,19 +16,30 @@ const enhance = compose(
       blobSize: state.lattice.blobSize,
       blobs: state.lattice.blobs,
       pressedKeys: getPressedNotesFromNoteTable(state.midi.noteTable),
-      nextColor: 'purple'
+      nextBlobColor: state.lattice.nextBlobColor
     }),
     latticeActions
   )
 )
 
-const Lattice = ({ width, height, url, blobSize, blobs, pressedKeys, nextColor, removeBlobs, addBlob }) => {
+const Lattice = ({
+  width,
+  height,
+  url,
+  blobSize,
+  blobs,
+  pressedKeys,
+  nextBlobColor,
+  removeBlobs,
+  addBlob,
+  changeNextBlobColor
+}) => {
   const visibleBlobs = reject(({ assignedMidiKeys }) => isEmpty(intersection(pressedKeys, assignedMidiKeys)), blobs)
 
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 })
   const [isCursorOverLattice, setIsCursorOverLattice] = useState(false)
   const isCursorVisible = isCursorOverLattice && length(pressedKeys) >= 1
-  const cursorColor = pathOr(nextColor, [0, 'color'], visibleBlobs)
+  const cursorColor = pathOr(nextBlobColor, [0, 'color'], visibleBlobs)
 
   return (
     <div
@@ -41,9 +52,10 @@ const Lattice = ({ width, height, url, blobSize, blobs, pressedKeys, nextColor, 
           removeBlobs({ blobs: visibleBlobs })
           addBlob({
             ...getRelativeCoordinates(e),
-            color: nextColor,
+            color: nextBlobColor,
             assignedMidiKeys: pressedKeys
           })
+          changeNextBlobColor()
         }
       }}
       onMouseOver={() => {
