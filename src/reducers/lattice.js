@@ -1,4 +1,5 @@
 import autodux from 'autodux'
+import { evolve, without, append } from 'ramda'
 
 const { reducer, actions } = autodux({
   slice: 'lattice',
@@ -7,12 +8,18 @@ const { reducer, actions } = autodux({
     height: 240,
     url: '/demo-lattice.jpg',
     blobSize: 30,
-    blobs: [{ x: 72, y: 75, color: 'yellow', assignedMidiKeys: [64] }]
+    blobs: []
   },
   actions: {
     addBlob: (state, { x, y, color, assignedMidiKeys }) => {
-      console.log(x, y, color, assignedMidiKeys)
-      return state
+      return evolve({
+        blobs: append({ x, y, color, assignedMidiKeys })
+      })(state)
+    },
+    removeBlobs: (state, { blobs }) => {
+      return evolve({
+        blobs: without(blobs)
+      })(state)
     }
   }
 })

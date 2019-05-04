@@ -22,7 +22,7 @@ const enhance = compose(
   )
 )
 
-const Lattice = ({ width, height, url, blobSize, blobs, pressedKeys, nextColor, addBlob }) => {
+const Lattice = ({ width, height, url, blobSize, blobs, pressedKeys, nextColor, removeBlobs, addBlob }) => {
   const visibleBlobs = reject(({ assignedMidiKeys }) => isEmpty(intersection(pressedKeys, assignedMidiKeys)), blobs)
 
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 })
@@ -38,6 +38,7 @@ const Lattice = ({ width, height, url, blobSize, blobs, pressedKeys, nextColor, 
       }}
       onClick={e => {
         if (e.button === 0 && isCursorVisible) {
+          removeBlobs({ blobs: visibleBlobs })
           addBlob({
             ...getRelativeCoordinates(e),
             color: nextColor,
@@ -54,14 +55,7 @@ const Lattice = ({ width, height, url, blobSize, blobs, pressedKeys, nextColor, 
     >
       <img src={url} alt="Lattice" width={width} height={height} />
       {isCursorVisible || visibleBlobs.map((blob, idx) => <Blob key={idx} size={blobSize} {...blob} />)}
-      {isCursorVisible && (
-        <Blob
-          size={blobSize}
-          color={cursorColor}
-          x={Math.round(cursorPosition.x - blobSize / 2)}
-          y={Math.round(cursorPosition.y - blobSize / 2)}
-        />
-      )}
+      {isCursorVisible && <Blob size={blobSize} color={cursorColor} x={cursorPosition.x} y={cursorPosition.y} />}
       <div className={s.hoverOverlay} style={{ width, height }} />
     </div>
   )

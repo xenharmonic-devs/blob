@@ -3,7 +3,12 @@ import cn from 'classnames'
 import s from './style.scss'
 
 const Blob = ({ x, y, size, color }) => {
-  return <div style={{ top: y, left: x, width: size, height: size }} className={cn(s.Blob, s[color])} />
+  return (
+    <div
+      className={cn(s.Blob, s[color])}
+      style={{ top: Math.round(y - size / 2), left: Math.round(x - size / 2), width: size, height: size }}
+    />
+  )
 }
 
 export default Blob
