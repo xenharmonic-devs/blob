@@ -1,7 +1,7 @@
 import React from 'react'
 import { compose, reject, intersection, isEmpty } from 'ramda'
 import { connect } from 'react-redux'
-import { getPressedNotesFromNoteTable } from '../../../helpers/midi'
+import { getPressedNotesFromNoteTable } from '../../../helpers/MIDI'
 import Blob from './Blob'
 import s from './style.scss'
 

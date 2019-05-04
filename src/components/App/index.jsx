@@ -2,6 +2,7 @@ import React from 'react'
 import { compose } from 'ramda'
 import { connect } from 'react-redux'
 import { actions as stateActions } from '../../reducers/state'
+import MIDI, { isMidiSupported } from '../../helpers/MIDI'
 import Notifications, { TYPE as NOTIFICATION_TYPE } from './Notifications'
 import Lattice from './Lattice'
 import Title from './Title'
@@ -14,7 +15,16 @@ const enhance = compose(
 )
 
 const App = ({ addNotification }) => {
-  if (!navigator.requestMIDIAccess) {
+  if (isMidiSupported()) {
+    const midi = new MIDI()
+    midi.on('note on', (note, velocity, channel) => {
+      console.log('pressing note', note)
+    })
+    midi.on('note off', (note, velocity, channel) => {
+      console.log('releasing note', note)
+    })
+    midi.init()
+  } else {
     addNotification({
       title: (
         <>
