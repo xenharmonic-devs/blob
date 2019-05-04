@@ -2,30 +2,33 @@ import React, { useState } from 'react'
 import { compose, reject, intersection, isEmpty, length, pathOr } from 'ramda'
 import { connect } from 'react-redux'
 import { getPressedNotesFromNoteTable } from '../../../helpers/MIDI'
+import { actions as latticeActions } from '../../../reducers/lattice'
 import { getRelativeCoordinates } from './helpers'
 import Blob from './Blob'
 import s from './style.scss'
 
 const enhance = compose(
-  connect(state => ({
-    width: state.lattice.width,
-    height: state.lattice.height,
-    url: state.lattice.url,
-    blobs: state.lattice.blobs,
-    pressedKeys: getPressedNotesFromNoteTable(state.midi.noteTable),
-    nextColor: 'purple'
-  }))
+  connect(
+    state => ({
+      width: state.lattice.width,
+      height: state.lattice.height,
+      url: state.lattice.url,
+      blobSize: state.lattice.blobSize,
+      blobs: state.lattice.blobs,
+      pressedKeys: getPressedNotesFromNoteTable(state.midi.noteTable),
+      nextColor: 'purple'
+    }),
+    latticeActions
+  )
 )
 
-const Lattice = ({ width, height, url, blobs, pressedKeys, nextColor }) => {
+const Lattice = ({ width, height, url, blobSize, blobs, pressedKeys, nextColor, addBlob }) => {
   const visibleBlobs = reject(({ assignedMidiKeys }) => isEmpty(intersection(pressedKeys, assignedMidiKeys)), blobs)
 
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 })
   const [isCursorOverLattice, setIsCursorOverLattice] = useState(false)
-  const isOnlyOneNotePressed = length(pressedKeys) === 1
-  const isCursorVisible = isCursorOverLattice && isOnlyOneNotePressed
+  const isCursorVisible = isCursorOverLattice && length(pressedKeys) >= 1
   const cursorColor = pathOr(nextColor, [0, 'color'], visibleBlobs)
-  const cursorSize = 30
 
   return (
     <div
@@ -35,7 +38,11 @@ const Lattice = ({ width, height, url, blobs, pressedKeys, nextColor }) => {
       }}
       onClick={e => {
         if (e.button === 0 && isCursorVisible) {
-          console.log(getRelativeCoordinates(e))
+          addBlob({
+            ...getRelativeCoordinates(e),
+            color: nextColor,
+            assignedMidiKeys: pressedKeys
+          })
         }
       }}
       onMouseOver={() => {
@@ -46,13 +53,13 @@ const Lattice = ({ width, height, url, blobs, pressedKeys, nextColor }) => {
       }}
     >
       <img src={url} alt="Lattice" width={width} height={height} />
-      {isCursorVisible || visibleBlobs.map((blob, idx) => <Blob key={idx} {...blob} />)}
+      {isCursorVisible || visibleBlobs.map((blob, idx) => <Blob key={idx} size={blobSize} {...blob} />)}
       {isCursorVisible && (
         <Blob
-          size={cursorSize}
+          size={blobSize}
           color={cursorColor}
-          x={Math.round(cursorPosition.x - cursorSize / 2)}
-          y={Math.round(cursorPosition.y - cursorSize / 2)}
+          x={Math.round(cursorPosition.x - blobSize / 2)}
+          y={Math.round(cursorPosition.y - blobSize / 2)}
         />
       )}
       <div className={s.hoverOverlay} style={{ width, height }} />
