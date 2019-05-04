@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { compose, reject, intersection, isEmpty } from 'ramda'
+import { compose, reject, intersection, isEmpty, length } from 'ramda'
 import { connect } from 'react-redux'
 import { getPressedNotesFromNoteTable } from '../../../helpers/MIDI'
 import { getRelativeCoordinates } from './helpers'
@@ -20,12 +20,14 @@ const Lattice = ({ width, height, url, blobs, pressedKeys }) => {
   const visibleBlobs = reject(({ assignedMidiKeys }) => isEmpty(intersection(pressedKeys, assignedMidiKeys)), blobs)
 
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 })
-  const [isCursorVisible, setIsCursorVisible] = useState(true)
+  const [isCursorOverLattice, setIsCursorOverLattice] = useState(false)
+  const [isOnlyOneNotePressed, setIsOnlyOneNotePressed] = useState(false)
+  const isCursorVisible = isCursorOverLattice && isOnlyOneNotePressed
   const cursorColor = 'yellow'
   const cursorSize = 30
 
   useEffect(() => {
-    setIsCursorVisible(!isEmpty(pressedKeys))
+    setIsOnlyOneNotePressed(length(pressedKeys) === 1)
   }, [pressedKeys])
 
   return (
@@ -35,21 +37,19 @@ const Lattice = ({ width, height, url, blobs, pressedKeys }) => {
         setCursorPosition(getRelativeCoordinates(e))
       }}
       onClick={e => {
-        if (e.button === 0) {
+        if (e.button === 0 && isCursorVisible) {
           console.log(getRelativeCoordinates(e))
         }
       }}
       onMouseOver={() => {
-        setIsCursorVisible(true)
+        setIsCursorOverLattice(true)
       }}
       onMouseOut={() => {
-        setIsCursorVisible(false)
+        setIsCursorOverLattice(false)
       }}
     >
       <img src={url} alt="Lattice" width={width} height={height} />
-      {visibleBlobs.map((blob, idx) => (
-        <Blob key={idx} {...blob} />
-      ))}
+      {isCursorVisible || visibleBlobs.map((blob, idx) => <Blob key={idx} {...blob} />)}
       {isCursorVisible && (
         <Blob
           size={cursorSize}
