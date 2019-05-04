@@ -5,18 +5,13 @@ import EventEmitter from 'eventemitter3'
 const commands = {
   noteOn: 0b1001,
   noteOff: 0b1000,
-  aftertouch: 0b1010,
-  pitchbend: 0b1110,
   cc: 0b1011
 }
 
 // https://www.midi.org/specifications/item/table-3-control-change-messages-data-bytes-2
 // http://www.nortonmusic.com/midi_cc.html
 const cc = {
-  dataEntry: 6,
-  sustain: 64,
-  registeredParameterLSB: 100,
-  registeredParameterMSB: 101
+  sustain: 64
 }
 
 class MIDI extends EventEmitter {
