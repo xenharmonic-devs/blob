@@ -1,5 +1,5 @@
 import autodux from 'autodux'
-import { evolve, T, assocPath, F, has } from 'ramda'
+import { evolve, T, assocPath, F, ifElse, hasPath } from 'ramda'
 
 const { reducer, actions } = autodux({
   slice: 'midi',
@@ -10,38 +10,30 @@ const { reducer, actions } = autodux({
     }
   },
   actions: {
-    noteOn: (state, { noteIdx }) => {
-      if (has(noteIdx, state.noteTable)) {
-        return evolve(
-          {
-            noteTable: {
-              [noteIdx]: {
-                pressed: T
-              }
+    noteOn: (state, { noteIdx }) =>
+      ifElse(
+        hasPath(['noteTable', noteIdx]),
+        evolve({
+          noteTable: {
+            [noteIdx]: {
+              pressed: T
             }
-          },
-          state
-        )
-      } else {
-        return assocPath(['noteTable', noteIdx], { pressed: true, sustained: false }, state)
-      }
-    },
-    noteOff: (state, { noteIdx }) => {
-      if (has(noteIdx, state.noteTable)) {
-        return evolve(
-          {
-            noteTable: {
-              [noteIdx]: {
-                pressed: F
-              }
+          }
+        }),
+        assocPath(['noteTable', noteIdx], { pressed: true, sustained: false })
+      )(state),
+    noteOff: (state, { noteIdx }) =>
+      ifElse(
+        hasPath(['noteTable', noteIdx]),
+        evolve({
+          noteTable: {
+            [noteIdx]: {
+              pressed: F
             }
-          },
-          state
-        )
-      } else {
-        return assocPath(['noteTable', noteIdx], { pressed: false, sustained: false }, state)
-      }
-    }
+          }
+        }),
+        assocPath(['noteTable', noteIdx], { pressed: false, sustained: false })
+      )(state)
   }
 })
 
