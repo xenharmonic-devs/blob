@@ -6,4 +6,12 @@
   border: 1px solid grey;
   display: inline-block;
   margin: 20px 0;
+  user-select: none;
+
+  .hoverOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+  }
 }
