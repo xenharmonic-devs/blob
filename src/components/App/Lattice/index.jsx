@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { compose, reject, intersection, isEmpty, length, findIndex, without } from 'ramda'
+import { compose, reject, intersection, isEmpty, length, findIndex, without, equals } from 'ramda'
 import { connect } from 'react-redux'
 import { getPressedNotesFromNoteTable } from '../../../helpers/MIDI'
 import { actions as latticeActions } from '../../../reducers/lattice'
@@ -70,6 +70,13 @@ const Lattice = ({
                 key: 'y',
                 value: y
               })
+              if (!equals(pressedKeys, blobs[idx].assignedMidiKeys)) {
+                changeBlobAttribute({
+                  idx,
+                  key: 'assignedMidiKeys',
+                  value: pressedKeys
+                })
+              }
             } else {
               removeBlobs({ blobs })
               addBlob({
