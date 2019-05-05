@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { compose } from 'ramda'
+import { compose, isEmpty, intersection } from 'ramda'
 import { connect } from 'react-redux'
 import { actions as stateActions } from '../../reducers/state'
 import { actions as midiActions } from '../../reducers/midi'
@@ -125,7 +125,9 @@ const App = ({
                     ))}
                   </select>
                 </td>
-                <td>{JSON.stringify(assignedMidiKeys)}</td>
+                <td style={{ fontWeight: isEmpty(intersection(pressedKeys, assignedMidiKeys)) ? 'normal' : 'bold' }}>
+                  {JSON.stringify(assignedMidiKeys)}
+                </td>
                 <td>
                   <Button onClick={() => removeBlobs({ blobs: [blob] })}>remove</Button>
                 </td>

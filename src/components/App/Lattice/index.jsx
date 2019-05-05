@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { compose, reject, intersection, isEmpty, length, pathOr } from 'ramda'
+import { compose, reject, intersection, isEmpty, length, findIndex } from 'ramda'
 import { connect } from 'react-redux'
 import { getPressedNotesFromNoteTable } from '../../../helpers/MIDI'
 import { actions as latticeActions } from '../../../reducers/lattice'
@@ -30,16 +30,17 @@ const Lattice = ({
   blobs,
   pressedKeys,
   nextBlobColor,
-  removeBlobs,
   addBlob,
-  changeNextBlobColor
+  removeBlobs,
+  changeNextBlobColor,
+  changeBlobAttribute
 }) => {
   const visibleBlobs = reject(({ assignedMidiKeys }) => isEmpty(intersection(pressedKeys, assignedMidiKeys)), blobs)
 
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 })
   const [isCursorOverLattice, setIsCursorOverLattice] = useState(false)
   const isCursorVisible = isCursorOverLattice && length(pressedKeys) >= 1
-  const cursorColor = pathOr(nextBlobColor, [0, 'color'], visibleBlobs)
+  const cursorColor = length(visibleBlobs) === 1 ? visibleBlobs[0].color : nextBlobColor
 
   return (
     <div
@@ -49,13 +50,42 @@ const Lattice = ({
       }}
       onClick={e => {
         if (e.button === 0 && isCursorVisible) {
-          removeBlobs({ blobs: visibleBlobs })
-          addBlob({
-            ...getRelativeCoordinates(e),
-            color: nextBlobColor,
-            assignedMidiKeys: pressedKeys
-          })
-          changeNextBlobColor()
+          const { x, y } = getRelativeCoordinates(e)
+          if (isEmpty(visibleBlobs)) {
+            addBlob({
+              x,
+              y,
+              color: nextBlobColor,
+              assignedMidiKeys: pressedKeys
+            })
+            changeNextBlobColor()
+          } else {
+            if (length(visibleBlobs) === 1) {
+              const idx = findIndex(
+                ({ assignedMidiKeys }) => !isEmpty(intersection(pressedKeys, assignedMidiKeys)),
+                blobs
+              )
+              changeBlobAttribute({
+                idx,
+                key: 'x',
+                value: x
+              })
+              changeBlobAttribute({
+                idx,
+                key: 'y',
+                value: y
+              })
+            } else {
+              removeBlobs({ blobs })
+              addBlob({
+                x,
+                y,
+                color: nextBlobColor,
+                assignedMidiKeys: pressedKeys
+              })
+              changeNextBlobColor()
+            }
+          }
         }
       }}
       onMouseOver={() => {
