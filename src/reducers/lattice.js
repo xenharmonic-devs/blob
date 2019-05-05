@@ -1,7 +1,6 @@
 import autodux from 'autodux'
 import { evolve, without, append, indexOf, last, head } from 'ramda'
-
-const blobColors = ['yellow', 'green', 'blue', 'red', 'brown', 'orange', 'purple', 'black']
+import { colors } from '../constants/colors'
 
 const { reducer, actions } = autodux({
   slice: 'lattice',
@@ -11,7 +10,7 @@ const { reducer, actions } = autodux({
     url: '/demo-lattice.jpg',
     blobSize: 30,
     blobs: [],
-    nextBlobColor: blobColors[0]
+    nextBlobColor: head(colors)
   },
   actions: {
     addBlob: (state, { x, y, color, assignedMidiKeys }) => {
@@ -26,14 +25,23 @@ const { reducer, actions } = autodux({
     },
     changeNextBlobColor: evolve({
       nextBlobColor: currentColor => {
-        if (currentColor === last(blobColors)) {
-          return head(blobColors)
+        if (currentColor === last(colors)) {
+          return head(colors)
         } else {
-          const currentIdx = indexOf(currentColor, blobColors)
-          return blobColors[currentIdx + 1]
+          const currentIdx = indexOf(currentColor, colors)
+          return colors[currentIdx + 1]
         }
       }
-    })
+    }),
+    changeBlobAttribute: (state, { idx, key, value }) => {
+      return evolve({
+        blobs: {
+          [idx]: {
+            [key]: () => value
+          }
+        }
+      })(state)
+    }
   }
 })
 
