@@ -1,10 +1,11 @@
 import autodux from 'autodux'
-import { evolve, T, assocPath, F, ifElse, hasPath } from 'ramda'
+import { evolve, T, assocPath, F, ifElse, hasPath, map, when, propEq, assoc } from 'ramda'
 
 const { reducer, actions } = autodux({
   slice: 'midi',
   initial: {
     ready: false,
+    sustainOn: false,
     noteTable: {
       64: { pressed: false, sustained: false }
     }
@@ -16,11 +17,12 @@ const { reducer, actions } = autodux({
         evolve({
           noteTable: {
             [noteIdx]: {
-              pressed: T
+              pressed: T,
+              sustained: () => state.sustainOn
             }
           }
         }),
-        assocPath(['noteTable', noteIdx], { pressed: true, sustained: false })
+        assocPath(['noteTable', noteIdx], { pressed: true, sustained: state.sustainOn })
       )(state),
     noteOff: (state, { noteIdx }) =>
       ifElse(
@@ -33,7 +35,15 @@ const { reducer, actions } = autodux({
           }
         }),
         assocPath(['noteTable', noteIdx], { pressed: false, sustained: false })
-      )(state)
+      )(state),
+    sustainOn: evolve({
+      sustainOn: T,
+      noteTable: map(when(propEq('pressed', true), assoc('sustained', true)))
+    }),
+    sustainOff: evolve({
+      sustainOn: F,
+      noteTable: map(assoc('sustained', false))
+    })
   }
 })
 

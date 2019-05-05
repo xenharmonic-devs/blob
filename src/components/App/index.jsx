@@ -19,7 +19,7 @@ const enhance = compose(
   )
 )
 
-const App = ({ addNotification, noteOn, noteOff }) => {
+const App = ({ addNotification, noteOn, noteOff, sustainOn, sustainOff }) => {
   useEffect(() => {
     if (isMidiSupported()) {
       const midi = new MIDI()
@@ -28,6 +28,12 @@ const App = ({ addNotification, noteOn, noteOff }) => {
       })
       midi.on('note off', (note, velocity, channel) => {
         noteOff({ noteIdx: note })
+      })
+      midi.on('sustain on', () => {
+        sustainOn()
+      })
+      midi.on('sustain off', () => {
+        sustainOff()
       })
       midi.init()
     } else {
