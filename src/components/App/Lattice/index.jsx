@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { compose, reject, intersection, isEmpty, length, findIndex } from 'ramda'
+import { compose, reject, intersection, isEmpty, length, findIndex, without } from 'ramda'
 import { connect } from 'react-redux'
 import { getPressedNotesFromNoteTable } from '../../../helpers/MIDI'
 import { actions as latticeActions } from '../../../reducers/lattice'
@@ -10,13 +10,8 @@ import s from './style.scss'
 const enhance = compose(
   connect(
     state => ({
-      width: state.lattice.width,
-      height: state.lattice.height,
-      url: state.lattice.url,
-      blobSize: state.lattice.blobSize,
-      blobs: state.lattice.blobs,
-      pressedKeys: getPressedNotesFromNoteTable(state.midi.noteTable),
-      nextBlobColor: state.lattice.nextBlobColor
+      ...state.lattice,
+      pressedKeys: getPressedNotesFromNoteTable(state.midi.noteTable)
     }),
     latticeActions
   )
@@ -96,7 +91,9 @@ const Lattice = ({
       }}
     >
       <img src={url} alt="Lattice" width={width} height={height} />
-      {isCursorVisible || visibleBlobs.map((blob, idx) => <Blob key={idx} size={blobSize} {...blob} />)}
+      {isCursorOverLattice
+        ? without(visibleBlobs, blobs).map((blob, idx) => <Blob key={idx} size={blobSize} {...blob} />)
+        : visibleBlobs.map((blob, idx) => <Blob key={idx} size={blobSize} {...blob} />)}
       {isCursorVisible && <Blob size={blobSize} color={cursorColor} x={cursorPosition.x} y={cursorPosition.y} />}
       <div className={s.hoverOverlay} style={{ width, height }} />
     </div>
