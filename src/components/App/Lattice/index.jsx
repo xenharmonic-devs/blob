@@ -13,7 +13,9 @@ const enhance = compose(
       ...state.lattice,
       pressedKeys: getPressedNotesFromNoteTable(state.midi.noteTable)
     }),
-    latticeActions
+    {
+      ...latticeActions
+    }
   )
 )
 

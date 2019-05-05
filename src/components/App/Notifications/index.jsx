@@ -17,7 +17,9 @@ const enhance = compose(
     state => ({
       notifications: state.state.notifications
     }),
-    stateActions
+    {
+      ...stateActions
+    }
   )
 )
 
