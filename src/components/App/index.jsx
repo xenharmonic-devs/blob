@@ -11,7 +11,7 @@ import LatticeInfo from './LatticeInfo'
 
 const enhance = compose(
   connect(
-    state => ({}),
+    null,
     {
       ...stateActions,
       ...midiActions
