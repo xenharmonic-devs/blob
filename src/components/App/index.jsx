@@ -3,11 +3,12 @@ import { compose } from 'ramda'
 import { connect } from 'react-redux'
 import { actions as stateActions } from '../../reducers/state'
 import { actions as midiActions } from '../../reducers/midi'
-import MIDI, { isMidiSupported } from '../../helpers/midi'
+import MIDI from '../../helpers/midi'
 import Notifications, { TYPE as NOTIFICATION_TYPE } from './Notifications'
 import Lattice from './Lattice'
 import Title from './Title'
 import LatticeInfo from './LatticeInfo'
+import MidiEnabler from './MidiEnabler'
 
 const enhance = compose(
   connect(
@@ -19,24 +20,17 @@ const enhance = compose(
   )
 )
 
+const midi = new MIDI()
+
 const App = props => {
   const { addNotification, noteOn, noteOff, sustainOn, sustainOff } = props
   useEffect(() => {
-    if (isMidiSupported()) {
-      const midi = new MIDI()
-      midi.on('note on', (note, velocity, channel) => {
-        noteOn({ noteIdx: note })
-      })
-      midi.on('note off', (note, velocity, channel) => {
-        noteOff({ noteIdx: note })
-      })
-      midi.on('sustain on', () => {
-        sustainOn()
-      })
-      midi.on('sustain off', () => {
-        sustainOff()
-      })
-      midi.init()
+    if (midi.isSupported()) {
+      midi
+        .on('note on', note => noteOn({ noteIdx: note }))
+        .on('note off', note => noteOff({ noteIdx: note }))
+        .on('sustain on', sustainOn)
+        .on('sustain off', sustainOff)
     } else {
       addNotification({
         title: (
@@ -57,7 +51,10 @@ const App = props => {
 
   return (
     <div className={'App'}>
-      <Title />
+      <Title>
+        <MidiEnabler midi={midi} style={{ position: 'absolute', top: 15, right: 10 }} />
+        Blob
+      </Title>
       <Lattice />
       <LatticeInfo />
       <Notifications />

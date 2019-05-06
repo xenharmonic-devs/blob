@@ -4,7 +4,6 @@ import { evolve, T, assocPath, F, ifElse, hasPath, map, when, propEq, assoc } fr
 const { reducer, actions } = autodux({
   slice: 'midi',
   initial: {
-    ready: false,
     sustainOn: false,
     noteTable: {
       64: { pressed: false, sustained: false }

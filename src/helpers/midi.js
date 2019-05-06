@@ -15,6 +15,9 @@ const cc = {
 }
 
 class MIDI extends EventEmitter {
+  isSupported() {
+    return !!navigator.requestMIDIAccess
+  }
   async init() {
     const enableMidiSupport = midiAccess => {
       midiAccess.onstatechange = event => {
@@ -62,12 +65,13 @@ class MIDI extends EventEmitter {
       }
     }
 
-    if (isMidiSupported()) {
-      const midiAccess = await navigator.requestMIDIAccess()
-      enableMidiSupport(midiAccess)
-      this.emit('ready')
-    } else {
-      this.emit('ready')
+    if (this.isSupported()) {
+      try {
+        const midiAccess = await navigator.requestMIDIAccess({ sysex: true })
+        enableMidiSupport(midiAccess)
+      } catch (e) {
+        this.emit('blocked')
+      }
     }
   }
 }
@@ -78,8 +82,6 @@ const getPressedNotesFromNoteTable = compose(
   filter(either(propEq('pressed', true), propEq('sustained', true)))
 )
 
-const isMidiSupported = () => !!navigator.requestMIDIAccess
-
-export { getPressedNotesFromNoteTable, isMidiSupported }
+export { getPressedNotesFromNoteTable }
 
 export default MIDI
