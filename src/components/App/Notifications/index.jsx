@@ -23,14 +23,17 @@ const enhance = compose(
   )
 )
 
-const Notifications = ({ notifications, removeNotification }) => (
-  <div className={s.Notifications}>
-    {isEmpty(notifications) || <h3>Notifications</h3>}
-    {notifications.map(props => (
-      <Notification key={props.id} {...props} onRemoveNotification={id => removeNotification({ id })} />
-    ))}
-  </div>
-)
+const Notifications = props => {
+  const { notifications, removeNotification } = props
+  return (
+    <div className={s.Notifications}>
+      {isEmpty(notifications) || <h3>Notifications</h3>}
+      {notifications.map(props => (
+        <Notification key={props.id} {...props} onRemoveNotification={id => removeNotification({ id })} />
+      ))}
+    </div>
+  )
+}
 
 export default enhance(Notifications)
 

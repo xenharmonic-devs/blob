@@ -1,4 +1,4 @@
-import { compose, keys, filter, either, propEq, map, unary } from 'ramda'
+import { compose, keys, filter, either, propEq, map, unary, forEach } from 'ramda'
 import EventEmitter from 'eventemitter3'
 
 // https://www.midi.org/specifications/item/table-1-summary-of-midi-message
@@ -21,10 +21,7 @@ class MIDI extends EventEmitter {
         initPort(event.port)
       }
 
-      const inputs = midiAccess.inputs.values()
-      for (let input = inputs.next(); input && !input.done; input = inputs.next()) {
-        initPort(input.value)
-      }
+      forEach(initPort, Array.from(midiAccess.inputs.values()))
     }
 
     const initPort = port => {

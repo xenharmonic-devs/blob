@@ -11,8 +11,9 @@ const { reducer, actions } = autodux({
     }
   },
   actions: {
-    noteOn: (state, { noteIdx }) =>
-      ifElse(
+    noteOn: (state, payload) => {
+      const { noteIdx } = payload
+      return ifElse(
         hasPath(['noteTable', noteIdx]),
         evolve({
           noteTable: {
@@ -23,9 +24,11 @@ const { reducer, actions } = autodux({
           }
         }),
         assocPath(['noteTable', noteIdx], { pressed: true, sustained: state.sustainOn })
-      )(state),
-    noteOff: (state, { noteIdx }) =>
-      ifElse(
+      )(state)
+    },
+    noteOff: (state, payload) => {
+      const { noteIdx } = payload
+      return ifElse(
         hasPath(['noteTable', noteIdx]),
         evolve({
           noteTable: {
@@ -35,15 +38,20 @@ const { reducer, actions } = autodux({
           }
         }),
         assocPath(['noteTable', noteIdx], { pressed: false, sustained: false })
-      )(state),
-    sustainOn: evolve({
-      sustainOn: T,
-      noteTable: map(when(propEq('pressed', true), assoc('sustained', true)))
-    }),
-    sustainOff: evolve({
-      sustainOn: F,
-      noteTable: map(assoc('sustained', false))
-    })
+      )(state)
+    },
+    sustainOn: (state, payload) => {
+      return evolve({
+        sustainOn: T,
+        noteTable: map(when(propEq('pressed', true), assoc('sustained', true)))
+      })(state)
+    },
+    sustainOff: (state, payload) => {
+      return evolve({
+        sustainOn: F,
+        noteTable: map(assoc('sustained', false))
+      })(state)
+    }
   }
 })
 

@@ -3,7 +3,7 @@ import { compose, isEmpty, intersection } from 'ramda'
 import { connect } from 'react-redux'
 import { colors } from '../../../constants/colors'
 import Button from '../Button'
-import { getPressedNotesFromNoteTable } from '../../../helpers/MIDI'
+import { getPressedNotesFromNoteTable } from '../../../helpers/midi'
 import { actions as latticeActions } from '../../../reducers/lattice'
 
 const enhance = compose(
@@ -20,7 +20,8 @@ const enhance = compose(
   )
 )
 
-const LatticeInfo = ({ blobs, removeBlobs, changeBlobAttribute, latticeWidth, latticeHeight, pressedKeys }) => {
+const LatticeInfo = props => {
+  const { blobs, removeBlobs, changeBlobAttribute, latticeWidth, latticeHeight, pressedKeys } = props
   return (
     <div className={'LatticeInfo'}>
       <div>pressedKeys: {JSON.stringify(pressedKeys)}</div>

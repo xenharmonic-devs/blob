@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { compose, reject, intersection, isEmpty, length, findIndex, without, equals } from 'ramda'
 import { connect } from 'react-redux'
-import { getPressedNotesFromNoteTable } from '../../../helpers/MIDI'
+import { getPressedNotesFromNoteTable } from '../../../helpers/midi'
 import { actions as latticeActions } from '../../../reducers/lattice'
 import { getRelativeCoordinates } from './helpers'
 import Blob from './Blob'
@@ -19,19 +19,20 @@ const enhance = compose(
   )
 )
 
-const Lattice = ({
-  width,
-  height,
-  url,
-  blobSize,
-  blobs,
-  pressedKeys,
-  nextBlobColor,
-  addBlob,
-  removeBlobs,
-  changeNextBlobColor,
-  changeBlobAttribute
-}) => {
+const Lattice = props => {
+  const {
+    width,
+    height,
+    url,
+    blobSize,
+    blobs,
+    pressedKeys,
+    nextBlobColor,
+    addBlob,
+    removeBlobs,
+    changeNextBlobColor,
+    changeBlobAttribute
+  } = props
   const visibleBlobs = reject(({ assignedMidiKeys }) => isEmpty(intersection(pressedKeys, assignedMidiKeys)), blobs)
 
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 })

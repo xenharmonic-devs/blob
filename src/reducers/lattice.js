@@ -13,27 +13,32 @@ const { reducer, actions } = autodux({
     nextBlobColor: head(colors)
   },
   actions: {
-    addBlob: (state, { x, y, color, assignedMidiKeys }) => {
+    addBlob: (state, payload) => {
+      const { x, y, color, assignedMidiKeys } = payload
       return evolve({
         blobs: append({ x, y, color, assignedMidiKeys })
       })(state)
     },
-    removeBlobs: (state, { blobs }) => {
+    removeBlobs: (state, payload) => {
+      const { blobs } = payload
       return evolve({
         blobs: without(blobs)
       })(state)
     },
-    changeNextBlobColor: evolve({
-      nextBlobColor: currentColor => {
-        if (currentColor === last(colors)) {
-          return head(colors)
-        } else {
-          const currentIdx = indexOf(currentColor, colors)
-          return colors[currentIdx + 1]
+    changeNextBlobColor: (state, payload) => {
+      return evolve({
+        nextBlobColor: currentColor => {
+          if (currentColor === last(colors)) {
+            return head(colors)
+          } else {
+            const currentIdx = indexOf(currentColor, colors)
+            return colors[currentIdx + 1]
+          }
         }
-      }
-    }),
-    changeBlobAttribute: (state, { idx, key, value }) => {
+      })(state)
+    },
+    changeBlobAttribute: (state, payload) => {
+      const { idx, key, value } = payload
       return evolve({
         blobs: {
           [idx]: {

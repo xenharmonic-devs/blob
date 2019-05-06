@@ -8,25 +8,23 @@ const { reducer, actions } = autodux({
     notifications: []
   },
   actions: {
-    addNotification: (state, { title, detail, type }) =>
-      evolve(
-        {
-          notifications: append({
-            id: uuidV4(),
-            title,
-            detail,
-            type
-          })
-        },
-        state
-      ),
-    removeNotification: (state, { id }) =>
-      evolve(
-        {
-          notifications: reject(propEq('id', id))
-        },
-        state
-      )
+    addNotification: (state, payload) => {
+      const { title, detail, type } = payload
+      return evolve({
+        notifications: append({
+          id: uuidV4(),
+          title,
+          detail,
+          type
+        })
+      })(state)
+    },
+    removeNotification: (state, payload) => {
+      const { id } = payload
+      return evolve({
+        notifications: reject(propEq('id', id))
+      })(state)
+    }
   }
 })
 
