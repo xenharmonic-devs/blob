@@ -64,7 +64,7 @@ It uses [stylelint](https://stylelint.io/) for formatting css files.
 
 ### Commiting
 
-Commiting has nothing special rules, you can write anything inside the message, but in the future we might shift
+Commiting has no special rules, you can write anything inside the message, but in the future we might shift
 over to using [commitizen](http://commitizen.github.io/cz-cli/).
 
 When you commit, then the linter will check the code and stop the commit process, if it finds any errors. It will also
