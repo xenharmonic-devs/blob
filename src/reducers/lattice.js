@@ -46,6 +46,14 @@ const { reducer, actions } = autodux({
           }
         }
       })(state)
+    },
+    setLattice: (state, payload) => {
+      const { width, height, url } = payload
+      return evolve({
+        width: () => width,
+        height: () => height,
+        url: () => url
+      })(state)
     }
   }
 })

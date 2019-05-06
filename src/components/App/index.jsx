@@ -9,6 +9,7 @@ import Lattice from './Lattice'
 import Title from './Title'
 import LatticeInfo from './LatticeInfo'
 import MidiEnabler from './MidiEnabler'
+import LatticeUrl from './LatticeUrl'
 
 const enhance = compose(
   connect(
@@ -56,6 +57,7 @@ const App = props => {
         Blob
       </Title>
       <Lattice />
+      <LatticeUrl />
       <LatticeInfo />
       <Notifications />
     </div>
