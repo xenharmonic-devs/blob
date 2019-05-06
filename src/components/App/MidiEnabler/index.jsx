@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Button from '../Button'
+import ToggleSwitch from '../ToggleSwitch'
 import s from './style.scss'
 
 const MidiEnabler = props => {
@@ -13,10 +13,12 @@ const MidiEnabler = props => {
   }, 1)
 
   return (
-    <Button
+    <ToggleSwitch
       className={s.MidiEnabler}
+      value={isMidiInited}
       disabled={isMidiInited}
-      onClick={() => {
+      onChange={() => {
+        // TODO: this doesn't count as user interaction for Chrome on OSX
         if (!isMidiInited) {
           if (midi.isSupported()) {
             midi.init()
@@ -24,9 +26,8 @@ const MidiEnabler = props => {
           setIsMidiInited(true)
         }
       }}
-    >
-      {isMidiInited ? '✔ MIDI enabled' : 'enable MIDI'}
-    </Button>
+      label={'MIDI Enabled'}
+    />
   )
 }
 
