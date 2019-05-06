@@ -67,7 +67,7 @@ class MIDI extends EventEmitter {
 
     if (this.isSupported()) {
       try {
-        const midiAccess = await navigator.requestMIDIAccess({ sysex: true })
+        const midiAccess = await navigator.requestMIDIAccess()
         enableMidiSupport(midiAccess)
       } catch (e) {
         this.emit('blocked')
