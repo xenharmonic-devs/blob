@@ -5,20 +5,23 @@ import s from './style.scss'
 const MidiEnabler = props => {
   const { midi } = props
   const [isMidiInited, setIsMidiInited] = useState(false)
+  const [isMidiBlocked, setIsMidiBlocked] = useState(false)
 
   useEffect(() => {
     if (midi.isSupported) {
-      midi.on('blocked', () => setIsMidiInited(false))
+      midi.on('blocked', () => {
+        setIsMidiInited(false)
+        setIsMidiBlocked(true)
+      })
     }
   }, 1)
 
   return (
     <ToggleSwitch
       className={s.MidiEnabler}
-      value={isMidiInited}
+      on={isMidiInited}
       disabled={isMidiInited}
       onChange={() => {
-        // TODO: this doesn't count as user interaction for Chrome on OSX
         if (!isMidiInited) {
           if (midi.isSupported()) {
             midi.init()
@@ -26,7 +29,7 @@ const MidiEnabler = props => {
           setIsMidiInited(true)
         }
       }}
-      label={'MIDI Enabled'}
+      label={`MIDI Enabled${isMidiBlocked ? ' (blocked)' : ''}`}
     />
   )
 }

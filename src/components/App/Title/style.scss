@@ -6,8 +6,13 @@ $height: 50px;
   height: $height;
   line-height: $height;
   text-align: center;
-  font-size: 1.3em;
-  letter-spacing: 2px;
   user-select: none;
   position: relative;
+
+  h1 {
+    margin: 0;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    font-weight: normal;
+  }
 }

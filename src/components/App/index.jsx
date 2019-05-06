@@ -54,7 +54,7 @@ const App = props => {
     <div className={'App'}>
       <Title>
         <MidiEnabler midi={midi} />
-        Blob
+        <h1>Blob</h1>
       </Title>
       <Lattice />
       <LatticeUrl />
