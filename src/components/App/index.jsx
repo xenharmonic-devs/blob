@@ -53,7 +53,7 @@ const App = props => {
   return (
     <div className={'App'}>
       <Title>
-        <MidiEnabler midi={midi} style={{ position: 'absolute', top: 15, right: 10 }} />
+        <MidiEnabler midi={midi} />
         Blob
       </Title>
       <Lattice />

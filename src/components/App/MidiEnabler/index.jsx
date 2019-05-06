@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import Button from '../Button'
+import s from './style.scss'
 
 const MidiEnabler = props => {
-  const { midi, style } = props
+  const { midi } = props
   const [isMidiInited, setIsMidiInited] = useState(false)
+
   useEffect(() => {
     if (midi.isSupported) {
       midi.on('blocked', () => setIsMidiInited(false))
     }
   }, 1)
+
   return (
     <Button
-      style={style}
+      className={s.MidiEnabler}
       disabled={isMidiInited}
       onClick={() => {
         if (!isMidiInited) {
