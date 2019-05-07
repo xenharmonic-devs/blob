@@ -8,7 +8,7 @@ const MidiEnabler = props => {
   const [isMidiBlocked, setIsMidiBlocked] = useState(false)
 
   useEffect(() => {
-    if (midi.isSupported) {
+    if (midi.isSupported()) {
       midi.on('blocked', () => {
         setIsMidiInited(false)
         setIsMidiBlocked(true)
