@@ -2,7 +2,7 @@ import autodux from 'autodux'
 import { evolve, without, append, indexOf, last, head } from 'ramda'
 import { colors } from '../constants/colors'
 
-const { reducer, actions } = autodux({
+const { reducer, actions, initial } = autodux({
   slice: 'lattice',
   initial: {
     width: 517,
@@ -58,4 +58,4 @@ const { reducer, actions } = autodux({
   }
 })
 
-export { reducer, actions }
+export { reducer, actions, initial }
