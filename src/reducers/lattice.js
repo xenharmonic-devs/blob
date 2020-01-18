@@ -7,7 +7,7 @@ const { reducer, actions, initial } = autodux({
   initial: {
     width: 517,
     height: 240,
-    url: '/demo-lattice.jpg',
+    url: '/blob/demo-lattice.jpg',
     blobSize: 30,
     blobs: [],
     nextBlobColor: head(colors)

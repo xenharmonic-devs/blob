@@ -10,6 +10,7 @@ import Title from './Title'
 import LatticeInfo from './LatticeInfo'
 import MidiEnabler from './MidiEnabler'
 import LatticeUrl from './LatticeUrl'
+import Footer from './Footer'
 
 const enhance = compose(
   connect(
@@ -60,6 +61,7 @@ const App = props => {
       <LatticeUrl />
       <LatticeInfo />
       <Notifications />
+      <Footer />
     </div>
   )
 }

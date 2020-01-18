@@ -48,7 +48,7 @@ navigate to the project root via any command line interface and run `npm install
 
 After that you need to run `npm run dev`. This will do a bunch of things in the background:
 
-* start a webserver at `http://localhost:3000`
+* start a webserver at `http://localhost:3000/dev.html`
 * watch changes of the files inside the `public` folder and trigger a server restart when any of the files change
 * when the server restarts, then it signals the browser to reload the page for you
 * when you change the source files inside the `src` folder, it will re-build the bundle and save it to `public`

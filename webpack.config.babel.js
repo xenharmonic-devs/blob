@@ -8,9 +8,7 @@ const mode = process.env.NODE_ENV === 'development' ? 'development' : 'productio
 
 const clientConfig = {
   entry: {
-    'blob.min': [
-      './src/index.jsx'
-    ]
+    'blob.min': ['./src/index.jsx']
   },
   output: {
     path: path.resolve(__dirname, 'public'),
