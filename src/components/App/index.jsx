@@ -27,7 +27,7 @@ const midi = new MIDI()
 const App = props => {
   const { addNotification, noteOn, noteOff, sustainOn, sustainOff } = props
   useEffect(() => {
-    if (!midi.isSupported()) {
+    if (midi.isSupported()) {
       midi
         .on('note on', note => noteOn({ noteIdx: note }))
         .on('note off', note => noteOff({ noteIdx: note }))
